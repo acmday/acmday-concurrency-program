@@ -13,9 +13,11 @@ public class AlternatelyPrintHandler{
 
     static volatile int number = 1;
     static volatile int index = 1;
-    static Object lock = new Object();
+    static final Object lock = new Object();
 
-
+    /**
+     * A线程打印的逻辑
+     */
     public void printerA() {
         synchronized (lock) {
             while (true) {
@@ -33,9 +35,6 @@ public class AlternatelyPrintHandler{
                     log.info(number+"("+Thread.currentThread().getName()+")");
                     number++;
                     index++;
-//                    if(index > 4) {
-//                        index = 1;
-//                    }
                     lock.notifyAll();
                 }
             }
@@ -43,7 +42,7 @@ public class AlternatelyPrintHandler{
     }
 
     /**
-     * 打印偶数
+     * B线程打印逻辑（打印偶数）
      */
     public void printerB() {
         synchronized (lock) {
@@ -71,7 +70,9 @@ public class AlternatelyPrintHandler{
         }
     }
 
-
+    /**
+     * C线程的打印逻辑
+     */
     public void printerC() {
         synchronized (lock) {
             while (true) {
@@ -89,9 +90,6 @@ public class AlternatelyPrintHandler{
                     log.info("      "+number+"("+Thread.currentThread().getName()+")");
                     number++;
                     index++;
-//                    if(index > 4) {
-//                        index = 1;
-//                    }
                     lock.notifyAll();
                 }
             }
